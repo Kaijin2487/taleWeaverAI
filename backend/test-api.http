@@ -1,0 +1,91 @@
+### TaleWeaver AI Backend API Tests
+### Use with VS Code REST Client extension or similar tools
+
+@baseUrl = http://localhost:3001/api
+@token = your-jwt-token-here
+
+### Health Check
+GET {{baseUrl}}/../health
+
+### Register User
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "test@example.com",
+  "password": "testpassword123"
+}
+
+### Login User
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "testpassword123"
+}
+
+### Get Current User Profile
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+### Generate Story
+POST {{baseUrl}}/stories/generate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "prompt": "A magical adventure with a brave little dragon",
+  "interests": "dragons, magic, adventure",
+  "age": 6
+}
+
+### Get User's Stories
+GET {{baseUrl}}/stories/mine
+Authorization: Bearer {{token}}
+
+### Get Specific Story
+GET {{baseUrl}}/stories/clx123456789
+Authorization: Bearer {{token}}
+
+### Share Story
+PUT {{baseUrl}}/stories/clx123456789/share
+Authorization: Bearer {{token}}
+
+### Unshare Story
+PUT {{baseUrl}}/stories/clx123456789/unshare
+Authorization: Bearer {{token}}
+
+### Delete Story
+DELETE {{baseUrl}}/stories/clx123456789
+Authorization: Bearer {{token}}
+
+### Get Public Stories
+GET {{baseUrl}}/public/stories?page=1&limit=12
+
+### Get Specific Public Story
+GET {{baseUrl}}/public/stories/clx123456789
+
+### Search Public Stories
+GET {{baseUrl}}/public/stories/search?q=dragon&page=1&limit=12
+
+### Add Comment to Public Story
+POST {{baseUrl}}/public/stories/clx123456789/comments
+Content-Type: application/json
+
+{
+  "name": "Sarah M.",
+  "text": "My kids loved this story! Thank you for sharing."
+}
+
+### Get Comments for Story
+GET {{baseUrl}}/public/stories/clx123456789/comments?page=1&limit=20
+
+### Chatbot Query
+POST {{baseUrl}}/chatbot
+Content-Type: application/json
+
+{
+  "query": "How can I help my 5-year-old with bedtime routines?"
+}

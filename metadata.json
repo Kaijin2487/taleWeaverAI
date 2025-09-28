@@ -1,0 +1,5 @@
+{
+  "name": "TaleWeaver AI",
+  "description": "An AI-powered storybook generator for children. Parents can provide a prompt, the child's age, and interests to create a unique, illustrated flipbook story, ensuring a safe and magical reading experience.",
+  "requestFramePermissions": []
+}

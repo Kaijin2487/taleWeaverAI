@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: taleweaver-postgres
+    environment:
+      POSTGRES_DB: taleweaver_ai
+      POSTGRES_USER: taleweaver_user
+      POSTGRES_PASSWORD: taleweaver_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U taleweaver_user -d taleweaver_ai"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # TaleWeaver AI Backend
+  backend:
+    build: .
+    container_name: taleweaver-backend
+    environment:
+      DATABASE_URL: "postgresql://taleweaver_user:taleweaver_password@postgres:5432/taleweaver_ai"
+      JWT_SECRET: "your-super-secret-jwt-key-change-in-production"
+      GEMINI_API_KEY: "your-gemini-api-key"
+      CLOUDINARY_CLOUD_NAME: "your-cloudinary-cloud-name"
+      CLOUDINARY_API_KEY: "your-cloudinary-api-key"
+      CLOUDINARY_API_SECRET: "your-cloudinary-api-secret"
+      PORT: 3001
+      NODE_ENV: "development"
+      FRONTEND_URL: "http://localhost:5173"
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run dev
+
+volumes:
+  postgres_data:

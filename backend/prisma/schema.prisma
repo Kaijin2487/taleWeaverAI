@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum SubscriptionPlan {
+  SPROUT
+  DREAMER
+  FAMILY
+}
+
+model User {
+  id              String           @id @default(cuid())
+  email           String           @unique
+  name            String
+  password        String
+  subscriptionPlan SubscriptionPlan @default(SPROUT)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  stories         StoryBook[]
+  
+  @@map("users")
+}
+
+model StoryBook {
+  id        String   @id @default(cuid())
+  title     String
+  pages     Json     // Array of { pageNumber: Int, text: String, imageUrl: String }
+  isPublic  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  comments  Comment[]
+  
+  @@map("story_books")
+}
+
+model Comment {
+  id         String    @id @default(cuid())
+  text       String
+  authorName String
+  createdAt  DateTime  @default(now())
+  storyId    String
+  story      StoryBook @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  
+  @@map("comments")
+}
