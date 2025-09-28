@@ -2,6 +2,8 @@
 
 A robust, scalable, and secure backend API for TaleWeaver AI - an AI-powered platform where parents can generate illustrated storybooks for their children.
 
+https://github.com/user-attachments/assets/2704a05e-0412-43bd-9c7d-d7b1434110a6
+
 ## 🚀 Features
 
 * **User Authentication**: JWT-based authentication with secure password hashing
